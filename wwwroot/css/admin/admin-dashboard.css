@@ -167,7 +167,6 @@ hr {
     }
 }
 
-/* Media Queries for Responsiveness */
 @media (max-width: 1024px) {
     .dashboard-cards {
         grid-template-columns: repeat(2, 1fr);

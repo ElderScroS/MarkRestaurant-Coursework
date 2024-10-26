@@ -118,17 +118,15 @@
     </div>
 
     <script>
-        // Данные для графиков
         const salesData = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(weeklySalesData));
-        const registrationsData = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(weeklyUserRegistrations)); // Updated
+        const registrationsData = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(weeklyUserRegistrations));
 
 
-        // График продаж
         const salesCtx = document.getElementById('salesChart').getContext('2d');
         const salesChart = new Chart(salesCtx, {
             type: 'bar',
             data: {
-                labels: salesData.map(data => data.Day), // Измените на Day, если используете даты
+                labels: salesData.map(data => data.Day),
                 datasets: [{
                     label: 'Total Sales',
                     data: salesData.map(data => data.TotalSales),
@@ -146,12 +144,11 @@
             }
         });
 
-        // График регистраций
         const registrationsCtx = document.getElementById('registrationsChart').getContext('2d');
         const registrationsChart = new Chart(registrationsCtx, {
             type: 'line',
             data: {
-                labels: registrationsData.map(data => data.Day), // Используйте название дня недели
+                labels: registrationsData.map(data => data.Day),
                 datasets: [{
                     label: 'User Registrations',
                     data: registrationsData.map(data => data.RegistrationCount),

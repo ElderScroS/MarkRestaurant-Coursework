@@ -86,7 +86,7 @@ namespace MarkRestaurant.Data.Repository
                 .GroupBy(o => o.CompletedAt.Date)
                 .Select(g => new SalesData
                 {
-                    Day = g.Key.ToString("dddd", CultureInfo.InvariantCulture), // Используем CultureInfo.InvariantCulture для английского языка
+                    Day = g.Key.ToString("dddd", CultureInfo.InvariantCulture),
                     Date = g.Key.ToString("dd/MM/yyyy"),
                     TotalSales = Math.Round(g.Sum(o => o.Product.Price * o.Quantity), 2)
                 })
