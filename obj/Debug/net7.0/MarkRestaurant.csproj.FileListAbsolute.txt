@@ -1412,3 +1412,4 @@ C:\Users\markn\OneDrive\Документы\Projects\MarkRestaurant-main\obj\Debu
 C:\Users\markn\OneDrive\Документы\Projects\MarkRestaurant-main\obj\Debug\net7.0\MarkRestaurant.pdb
 C:\Users\markn\OneDrive\Документы\Projects\MarkRestaurant-main\obj\Debug\net7.0\MarkRestaurant.genruntimeconfig.cache
 C:\Users\markn\OneDrive\Документы\Projects\MarkRestaurant-main\obj\Debug\net7.0\ref\MarkRestaurant.dll
+C:\Users\markn\OneDrive\Документы\Projects\MarkRestaurant-main\bin\Debug\net7.0\Newtonsoft.Json.dll

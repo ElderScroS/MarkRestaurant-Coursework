@@ -15,7 +15,7 @@ namespace MarkRestaurant.Data.Repository
 
         public async Task AddOrderToOrders(Product product, User user)
         {
-            var existingOrder = _context._orders
+            var existingOrder = _context.Orders
                     .FirstOrDefault(o => o.ProductId == product.Id && o.UserId == user.Id);
 
             if (existingOrder != null)
@@ -24,7 +24,7 @@ namespace MarkRestaurant.Data.Repository
             }
             else
             {
-                _context._orders.Add(new Order() { Product = product, User = user, Quantity = 1 });
+                _context.Orders.Add(new Order() { Product = product, User = user, Quantity = 1 });
             }
 
             await _context.SaveChangesAsync();
@@ -32,8 +32,8 @@ namespace MarkRestaurant.Data.Repository
 
         public async Task<List<Order>> GetProductsByUser(string userId)
         {
-            var orders = _context._orders.Where(b => b.UserId == userId).ToList();
-            var produts = _context._menuProducts.ToList();
+            var orders = _context.Orders.Where(b => b.UserId == userId).ToList();
+            var produts = _context.MenuProducts.ToList();
             var ords = new List<Order>();
 
             foreach (var product in orders)
@@ -46,26 +46,26 @@ namespace MarkRestaurant.Data.Repository
 
         public async Task ClearProductsByUser(string userId)
         {
-            var orders = _context._orders.Where(b => b.UserId == userId);
-            _context._orders.RemoveRange(orders);
+            var orders = _context.Orders.Where(b => b.UserId == userId);
+            _context.Orders.RemoveRange(orders);
 
             await _context.SaveChangesAsync();
         }
 
         public async Task RemoveProductFromBasket(Guid productId, string userId)
         {
-            var order = _context._orders.FirstOrDefault(o => o.ProductId == productId && o.UserId == userId);
+            var order = _context.Orders.FirstOrDefault(o => o.ProductId == productId && o.UserId == userId);
 
             if (order != null)
             {
-                _context._orders.Remove(order);
+                _context.Orders.Remove(order);
                 await _context.SaveChangesAsync();
             }
         }
 
         public async Task<double> GetTotalPriceByUser(string userId)
         {
-            var orders = await _context._orders
+            var orders = await _context.Orders
                 .Where(b => b.UserId == userId)
                 .Include(o => o.Product)
                 .ToListAsync();
@@ -81,7 +81,7 @@ namespace MarkRestaurant.Data.Repository
         }
         public async Task<List<Order>> FinishOrder(string userId)
         {
-            var orders = await _context._orders
+            var orders = await _context.Orders
                 .Where(b => b.UserId == userId)
                 .Include(o => o.Product)
                 .ToListAsync();
@@ -89,7 +89,23 @@ namespace MarkRestaurant.Data.Repository
             if (!orders.Any())
                 return null;
 
-            _context._orders.RemoveRange(orders);
+            foreach (var order in orders)
+            {
+                var finishedOrder = new FinishedOrder
+                {
+                    UserId = order.UserId,
+                    ProductId = order.ProductId,
+                    Quantity = order.Quantity,
+                    User = order.User,
+                    Product = order.Product,
+                    CompletedAt = DateTime.Now
+                };
+
+                _context.FinishedOrders.Add(finishedOrder);
+            }
+
+            _context.Orders.RemoveRange(orders);
+
             await _context.SaveChangesAsync();
 
             return orders;

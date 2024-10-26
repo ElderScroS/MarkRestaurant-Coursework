@@ -1,0 +1,152 @@
+﻿@using MarkRestaurant.Data;
+@using MarkRestaurant.Data.Repository;
+@using MarkRestaurant.Models;
+@using Microsoft.EntityFrameworkCore;
+@inject ProductRepository productRepository
+@model Product
+
+@{
+    ViewData["Title"] = "AdminAddProduct";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="~/css/admin/admin-addProduct.css" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet" />
+    <title>Admin Add Product</title>
+</head>
+<body>
+    <div class="navbar">
+        <div class="nav-item">
+            <form asp-controller="Navigation" asp-action="AdminDashboard" method="post">
+                <button type="submit">
+                    <i class="fas fa-tachometer-alt"></i>Dashboard
+                </button>
+            </form>
+        </div>
+        <div class="nav-item">
+            <form asp-controller="Navigation" asp-action="AdminUsers" method="post">
+                <button type="submit">
+                    <i class="fas fa-users"></i>Users
+                </button>
+            </form>
+        </div>
+        <div class="nav-item">
+            <form asp-controller="Navigation" asp-action="AdminMenu" method="post">
+                <button type="submit">
+                    <i class="fas fa-boxes"></i>Menu
+                </button>
+            </form>
+        </div>
+    </div>
+    <a asp-controller="Home" asp-action="Index" class="exit-button">Exit</a>
+
+    <div class="add-product-container">
+        <h1 class="admin-add-product-title">Add Product To Menu</h1>
+
+        <form asp-controller="Admin" asp-action="AddProductToMenu" method="post" onsubmit="return roundPrice()">
+            <div class="form-group">
+                <label for="category">Category:</label>
+                <select id="category" asp-for="Category" class="form-control" required>
+                    <option value="">Select Category</option>
+                    <option value="Burgers">Burgers</option>
+                    <option value="Potato">Potato</option>
+                    <option value="Snacks">Snacks</option>
+                    <option value="Drinks">Drinks</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="title">Title:</label>
+                <select id="title" asp-for="Title" class="form-control" required>
+                    <option value="">Select Title</option>
+                </select>
+            </div>
+
+            <input type="number" id="price" asp-for="Price" class="form-control" step="0.1" min="0.5" required>
+
+            <button type="submit" class="add-product-button">Add Product</button>
+        </form>
+
+        <p style="text-align: center; color: #b3a4a4; font-size: 14px; margin-top: 10px;">Image will be uploaded automatically based on the selected title.</p>
+    </div>
+
+    <script>
+        const products = {
+            "Burgers": [
+                "Double Big Tasty(beef)",
+                "Double Big Tasty(chicken)",
+                "Hamburger",
+                "Double Hamburger",
+                "Triple Hamburger",
+                "Cheeseburger",
+                "Double Cheeseburger",
+                "Triple Cheeseburger"
+            ],
+            "Potato": [
+                "French Frize(Extra)",
+                "French Frize(Big)",
+                "French Frize(Average)",
+                "French Frize(Small)",
+                "Rustic potatoes(Extra)",
+                "Rustic potatoes(Big)",
+                "Rustic potatoes(Average)",
+                "Rustic potatoes(Small)"
+            ],
+            "Snacks": [
+                "Chicken Strips(5 p)",
+                "Chicken Strips(3 p)",
+                "Chicken wings(8 p)",
+                "Chicken wings(5 p)",
+                "Chicken wings(3 p)",
+                "Shrimp(6 p)",
+                "Shrimp(4 p)",
+                "Chicken Box"
+            ],
+            "Drinks": [
+                "Coca-Cola 750ml",
+                "Coca-Cola 500ml",
+                "Coca-Cola 400ml",
+                "Coca-Cola 250ml",
+                "Fanta 750ml",
+                "Fanta 500ml",
+                "Fanta 400ml",
+                "Fanta 250ml"
+            ]
+        };
+
+        document.getElementById('category').addEventListener('change', function () {
+            const category = this.value;
+            const titleSelect = document.getElementById('title');
+
+            titleSelect.innerHTML = '<option value="">Select Title</option>';
+
+            if (category && products[category]) {
+                products[category].forEach(function (title) {
+                    const option = document.createElement('option');
+                    option.value = title;
+                    option.textContent = title;
+                    titleSelect.appendChild(option);
+                });
+            }
+        });
+
+        function roundPrice() {
+            const priceInput = document.getElementById('price');
+            const priceValue = parseFloat(priceInput.value);
+            if (!isNaN(priceValue)) {
+                priceInput.value = priceValue.toFixed(2); // Округление до двух знаков после запятой
+                alert("Округленная цена:", priceInput.value); // Вывод округленного значения в консоль
+            }
+
+            return true; // Возвращаем true, чтобы форма отправилась
+        }
+
+
+    </script>
+
+</body>
+</html>

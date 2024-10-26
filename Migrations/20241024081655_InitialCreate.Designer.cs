@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MarkRestaurant.Migrations
 {
     [DbContext(typeof(MarkRestaurantDbContext))]
-    [Migration("20240803141350_FixBasketForeignKey")]
-    partial class FixBasketForeignKey
+    [Migration("20241024081655_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -31,7 +31,7 @@ namespace MarkRestaurant.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("Password")
+                    b.Property<string>("PasswordHash")
                         .IsRequired()
                         .HasMaxLength(150)
                         .HasColumnType("nvarchar(150)");
@@ -43,14 +43,26 @@ namespace MarkRestaurant.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Admin");
+                    b.HasIndex("Username")
+                        .IsUnique();
+
+                    b.ToTable("Admins");
                 });
 
-            modelBuilder.Entity("MarkRestaurant.Models.Basket", b =>
+            modelBuilder.Entity("MarkRestaurant.Models.FinishedOrder", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CompletedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("ProductId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int");
 
                     b.Property<string>("UserId")
                         .IsRequired()
@@ -58,19 +70,42 @@ namespace MarkRestaurant.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UserId")
-                        .IsUnique();
+                    b.HasIndex("ProductId");
 
-                    b.ToTable("_baskets");
+                    b.HasIndex("UserId");
+
+                    b.ToTable("FinishedOrders");
+                });
+
+            modelBuilder.Entity("MarkRestaurant.Models.Order", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("ProductId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Orders");
                 });
 
             modelBuilder.Entity("MarkRestaurant.Product", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid?>("BasketId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Category")
@@ -92,9 +127,7 @@ namespace MarkRestaurant.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("BasketId");
-
-                    b.ToTable("_menuProducts");
+                    b.ToTable("MenuProducts");
                 });
 
             modelBuilder.Entity("MarkRestaurant.User", b =>
@@ -318,22 +351,42 @@ namespace MarkRestaurant.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("MarkRestaurant.Models.Basket", b =>
+            modelBuilder.Entity("MarkRestaurant.Models.FinishedOrder", b =>
                 {
-                    b.HasOne("MarkRestaurant.User", "User")
-                        .WithOne("Basket")
-                        .HasForeignKey("MarkRestaurant.Models.Basket", "UserId")
+                    b.HasOne("MarkRestaurant.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.HasOne("MarkRestaurant.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Product");
 
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("MarkRestaurant.Product", b =>
+            modelBuilder.Entity("MarkRestaurant.Models.Order", b =>
                 {
-                    b.HasOne("MarkRestaurant.Models.Basket", null)
-                        .WithMany("products")
-                        .HasForeignKey("BasketId");
+                    b.HasOne("MarkRestaurant.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("MarkRestaurant.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Product");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -384,17 +437,6 @@ namespace MarkRestaurant.Migrations
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("MarkRestaurant.Models.Basket", b =>
-                {
-                    b.Navigation("products");
-                });
-
-            modelBuilder.Entity("MarkRestaurant.User", b =>
-                {
-                    b.Navigation("Basket")
                         .IsRequired();
                 });
 #pragma warning restore 612, 618

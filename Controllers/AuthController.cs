@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using MarkRestaurant.Data;
+using MarkRestaurant.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace MarkRestaurant.Controllers
@@ -8,16 +10,19 @@ namespace MarkRestaurant.Controllers
         private readonly SignInManager<User> _signInManager;
         private readonly UserManager<User> _userManager;
         private readonly IEmailSender _emailSender;
+        private readonly MarkRestaurantDbContext _context;
 
         public AuthController(
             SignInManager<User> signInManager,
             UserManager<User> userManager,
+            MarkRestaurantDbContext context,
             IEmailSender emailSender
         )
         {
             _signInManager = signInManager;
             _userManager = userManager;
             _emailSender = emailSender;
+            _context = context;
         }
 
         private async Task<User?> GetUserByEmailAsync(string email)
@@ -28,19 +33,25 @@ namespace MarkRestaurant.Controllers
         [HttpPost]
         public async Task<IActionResult> Login(string email, string passwordHash)
         {
+            var admin = _context.Admins.SingleOrDefault(a => a.Username == email);
+
+            if (admin != null)
+            {
+                var passwordHasher = new PasswordHasher<Admin>();
+                var passwordVerificationResult = passwordHasher.VerifyHashedPassword(admin, admin.PasswordHash, passwordHash);
+
+                if (passwordVerificationResult == PasswordVerificationResult.Success)
+                {
+                    var users = _userManager.Users.ToList();
+                    return View("~/Views/Admin/AdminUsers.cshtml", users);
+                }
+            }
+
             var user = await GetUserByEmailAsync(email);
 
-            if (user == null)
+            if (user == null || user.EmailConfirmed == false)
             {
-                ModelState.AddModelError(string.Empty, "Invalid username or password, or email has not been confirmed");
-                await Task.Delay(4000);
-                return View("~/Views/Home/Index.cshtml");
-            }
-            if (user.EmailConfirmed == false)
-            {
-                ModelState.AddModelError(string.Empty, "Invalid username or password, or email has not been confirmed");
-                await Task.Delay(4000);
-                return View("~/Views/Home/Index.cshtml");
+                return View("Error", new ErrorViewModel("Error", "Invalid username or password, or email has not been confirmed"));
             }
 
             var result = await _signInManager.PasswordSignInAsync(email, passwordHash, isPersistent: false, lockoutOnFailure: false);
@@ -50,9 +61,7 @@ namespace MarkRestaurant.Controllers
                 return View("~/Views/Account/UserEdit.cshtml", user);
             }
 
-            ModelState.AddModelError(string.Empty, "Invalid login attempt");
-            await Task.Delay(4000);
-            return View("~/Views/Home/Index.cshtml");
+            return View("Error", new ErrorViewModel("Error", "Invalid login attempt"));
         }
 
         [HttpPost]
@@ -64,9 +73,7 @@ namespace MarkRestaurant.Controllers
 
                 if (existingUser != null)
                 {
-                    ModelState.AddModelError(string.Empty, "User already exists");
-                    await Task.Delay(4000);
-                    return View("~/Views/Home/Index.cshtml");
+                    return View("Error", new ErrorViewModel("Error", "User already exists"));
                 }
 
                 var user = new User(email, passwordHash);
@@ -85,10 +92,10 @@ namespace MarkRestaurant.Controllers
                     return RedirectToAction("EmailConfirm", "Navigation");
                 }
 
-                ModelState.AddModelError(string.Empty, "Registration failed. Please check your details.");
+                return View("Error", new ErrorViewModel("Registration Failed", "Registration failed. Please check your details."));
             }
 
-            return View("~/Views/Home/Index.cshtml");
+            return View("Error", new ErrorViewModel("Error", "Something went wrong"));
         }
 
         [HttpGet]
@@ -96,7 +103,7 @@ namespace MarkRestaurant.Controllers
         {
             if (userId == null || token == null)
             {
-                return RedirectToAction("Index", "Home");
+                return View("Error", new ErrorViewModel("Error", "Something went wrong"));
             }
 
             var user = await _userManager.FindByIdAsync(userId);
@@ -114,7 +121,7 @@ namespace MarkRestaurant.Controllers
             }
             else
             {
-                return View("Error");
+                return View("Error", new ErrorViewModel("Error", "Something went wrong"));
             }
         }
 
@@ -123,17 +130,13 @@ namespace MarkRestaurant.Controllers
         {
             if (string.IsNullOrEmpty(email))
             {
-                ModelState.AddModelError(string.Empty, "Email is required.");
-                await Task.Delay(4000);
-                return RedirectToAction("Index", "Home");
+                return View("Error", new ErrorViewModel("Empty", "Email is required."));
             }
 
             var user = await _userManager.FindByEmailAsync(email);
             if (user == null || !user.EmailConfirmed)
             {
-                ModelState.AddModelError(string.Empty, "Invalid email or email has not been confirmed.");
-                await Task.Delay(4000);
-                return RedirectToAction("Index", "Home");
+                return View("Error", new ErrorViewModel("Invalid email", "Invalid email or email has not been confirmed."));
             }
 
             var token = await _userManager.GeneratePasswordResetTokenAsync(user);
@@ -182,18 +185,10 @@ namespace MarkRestaurant.Controllers
 
             foreach (var error in result.Errors)
             {
-                ModelState.AddModelError(string.Empty, error.Description);
+                return View("Error", new ErrorViewModel("Error", error.Description));
             }
 
             return RedirectToAction("Index", "Home");
         }
-
-        [HttpPost]
-        public async Task<IActionResult> ResetPasswordView(string email)
-        {
-            var user = await GetUserByEmailAsync(email);
-            return RedirectToAction("ResetPasswordView", user);
-        }
-
     }
 }

@@ -19,9 +19,21 @@ builder.Services.AddDbContext<MarkRestaurantDbContext>(options =>
 
 builder.Services.AddTransient<ProductRepository>();
 builder.Services.AddTransient<OrderRepository>();
+builder.Services.AddTransient<DashboardRepository>();
 builder.Services.AddScoped<IEmailSender, EmailSender>();
 
 var app = builder.Build();
+
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    var context = services.GetRequiredService<MarkRestaurantDbContext>();
+
+    context.Database.EnsureCreated();
+
+    await context.SeedDataAsync();
+    await context.SeedAdminAsync();
+}
 
 if (!app.Environment.IsDevelopment())
 {

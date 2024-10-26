@@ -1,4 +1,5 @@
 ﻿using MarkRestaurant.Data.Repository;
+using MarkRestaurant.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
@@ -36,47 +37,60 @@ namespace MarkRestaurant.Controllers
             var product = await _productRepository.GetProductById(Guid.Parse(productId));
 
             if (user == null || product == null)
-                return BadRequest("The user or product was not found.");
+            {
+                return View("Error", new ErrorViewModel("Error", "The user or product was not found."));
+            }
 
             await _basketRepository.AddOrderToOrders(product, user);
 
             return View("~/Views/Logged/LoggedMenu.cshtml", user);
         }
+
         [HttpPost]
         public async Task<IActionResult> RemoveProductFromBasket(Guid productId, string email)
         {
             var user = await GetUserByEmailAsync(email);
 
             if (user == null)
-                return BadRequest("User not found");
+            {
+                return View("Error", new ErrorViewModel("Error", "The user or product was not found."));
+            }
 
             await _basketRepository.RemoveProductFromBasket(productId, user.Id);
 
             return View("~/Views/Account/Basket.cshtml", user);
         }
+
         [HttpPost]
         public async Task<IActionResult> ClearProductsInBasket(string email)
         {
             var user = await GetUserByEmailAsync(email);
 
             if (user == null)
-                return BadRequest("User not found");
+            {
+                return View("Error", new ErrorViewModel("Error", "The user or product was not found."));
+            }
 
             await _basketRepository.ClearProductsByUser(user.Id);
 
             return View("~/Views/Account/Basket.cshtml", user);
         }
+
         [HttpPost]
         public async Task<IActionResult> FinishOrder(string email, double totalPrice)
         {
             var user = await GetUserByEmailAsync(email);
 
             if (user == null)
-                return BadRequest("User not found");
+            {
+                return View("Error", new ErrorViewModel("Error", "The user or product was not found."));
+            }
 
             var orders = await _basketRepository.FinishOrder(user.Id);
             if (orders == null || !orders.Any())
-                return BadRequest("Order could not be completed");
+            {
+                return View("Error", new ErrorViewModel("Error", "Order could not be completed."));
+            }
 
             var orderNumber = GenerateOrderNumber();
 
@@ -85,15 +99,13 @@ namespace MarkRestaurant.Controllers
             return View("~/Views/Logged/LoggedIndex.cshtml", user);
         }
 
-
         [HttpPost]
         public async Task<IActionResult> Save(string email, string name, string surname, string middleName, int age, string phoneNumber)
         {
             var user = await GetUserByEmailAsync(email);
 
             if (string.IsNullOrWhiteSpace(email) || string.IsNullOrWhiteSpace(name) ||
-                string.IsNullOrWhiteSpace(surname) ||
-                string.IsNullOrWhiteSpace(phoneNumber))
+                string.IsNullOrWhiteSpace(surname) || string.IsNullOrWhiteSpace(phoneNumber))
             {
                 return View("~/Views/Account/UserEdit.cshtml", user);
             }

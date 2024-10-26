@@ -1,23 +1,30 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using MarkRestaurant.Data.Repository;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace MarkRestaurant.Controllers
 {
     public class NavigationController : Controller
     {
         private readonly UserManager<User> _userManager;
+        private readonly ProductRepository _productRepository;
 
         public NavigationController(
-            UserManager<User> userManager
+            UserManager<User> userManager,
+            ProductRepository productRepository
         )
         {
             _userManager = userManager;
+            _productRepository = productRepository;
         }
 
         private async Task<User?> GetUserByEmailAsync(string email)
         {
             return await _userManager.FindByEmailAsync(email);
         }
+
+        #region  Logged
 
         [HttpPost]
         public async Task<IActionResult> LIndex(string email)
@@ -62,6 +69,29 @@ namespace MarkRestaurant.Controllers
             var user = await GetUserByEmailAsync(email);
             return View("~/Views/Account/Basket.cshtml", user);
         }
+        [HttpPost]
+        public async Task<IActionResult> ResetPasswordView(string email)
+        {
+            var user = await GetUserByEmailAsync(email);
+            return RedirectToAction("ResetPasswordView", user);
+        }
+
+        #endregion
+
+        #region Admin 
+
+        public IActionResult AdminAddProduct() => View("~/Views/Admin/AdminAddProduct.cshtml");
+        public IActionResult AdminDashboard() => View("~/Views/Admin/AdminDashboard.cshtml");
+        public IActionResult AdminMenu() => View("~/Views/Admin/AdminMenu.cshtml");
+        public async Task<IActionResult> AdminUsers()
+        {
+            var users = await _userManager.Users.ToListAsync();
+            return View("~/Views/Admin/AdminUsers.cshtml", users);
+        }
+
+        #endregion
+
+        #region Email 
 
         public IActionResult ResetPasswordView() => View("~/Views/Auth/ResetPasswordView.cshtml");
         public IActionResult EmailConfirm() => View("~/Views/Auth/EmailConfirm.cshtml");
@@ -69,5 +99,7 @@ namespace MarkRestaurant.Controllers
         public IActionResult ForgotPassword() => View("~/Views/Auth/ForgotPassword.cshtml");
         public IActionResult ResetPasswordSucces() => View("~/Views/Auth/ResetPasswordSucces.cshtml");
 
+        #endregion
+        
     }
 }

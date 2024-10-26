@@ -1,31 +1,11 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
-using System.ComponentModel.DataAnnotations;
-using MarkRestaurant.Models;
-using System.Diagnostics.CodeAnalysis;
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace MarkRestaurant
 {
     public class Product
     {
-        public Product()
-        {
-            Id = Guid.NewGuid();
-            Title = "";
-            Category = "";
-            Price = 0;
-            ImageUrl = "/image/none.png";
-        }
-        public Product(string title, string category, double price, string imageUrl)
-        {
-            Id = Guid.NewGuid();
-            Title = title;
-            Category = category;
-            Price = price;
-            ImageUrl = imageUrl;
-        }
-
         [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public Guid Id { get; set; }
 
         [Required]
@@ -41,5 +21,23 @@ namespace MarkRestaurant
 
         [Required]
         public string ImageUrl { get; set; }
+
+        public Product()
+        {
+            Id = Guid.NewGuid();
+            Category = "";
+            Title = "";
+            Price = 0;
+            ImageUrl = "/image/none.png";
+        }
+
+        public Product(string category, string title, double price, string imageUrl)
+        {
+            Id = Guid.NewGuid();
+            Category = category;
+            Title = title;
+            Price = price;
+            ImageUrl = imageUrl;
+        }
     }
 }

@@ -5,68 +5,88 @@
       "PackagePath": "staticwebassets\\MarkRestaurant.bundle.scp.css"
     },
     {
-      "Id": "C:\\Users\\markn\\OneDrive\\Документы\\Projects\\MarkRestaurant-main\\wwwroot\\css\\basket.css",
-      "PackagePath": "staticwebassets\\css\\basket.css"
+      "Id": "C:\\Users\\markn\\OneDrive\\Документы\\Projects\\MarkRestaurant-main\\wwwroot\\css\\admin\\admin-addProduct.css",
+      "PackagePath": "staticwebassets\\css\\admin\\admin-addProduct.css"
     },
     {
-      "Id": "C:\\Users\\markn\\OneDrive\\Документы\\Projects\\MarkRestaurant-main\\wwwroot\\css\\bootstrap.css",
-      "PackagePath": "staticwebassets\\css\\bootstrap.css"
+      "Id": "C:\\Users\\markn\\OneDrive\\Документы\\Projects\\MarkRestaurant-main\\wwwroot\\css\\admin\\admin-dashboard.css",
+      "PackagePath": "staticwebassets\\css\\admin\\admin-dashboard.css"
     },
     {
-      "Id": "C:\\Users\\markn\\OneDrive\\Документы\\Projects\\MarkRestaurant-main\\wwwroot\\css\\confirm-email-succes.css",
-      "PackagePath": "staticwebassets\\css\\confirm-email-succes.css"
+      "Id": "C:\\Users\\markn\\OneDrive\\Документы\\Projects\\MarkRestaurant-main\\wwwroot\\css\\admin\\admin-menu.css",
+      "PackagePath": "staticwebassets\\css\\admin\\admin-menu.css"
     },
     {
-      "Id": "C:\\Users\\markn\\OneDrive\\Документы\\Projects\\MarkRestaurant-main\\wwwroot\\css\\email-confirm.css",
-      "PackagePath": "staticwebassets\\css\\email-confirm.css"
+      "Id": "C:\\Users\\markn\\OneDrive\\Документы\\Projects\\MarkRestaurant-main\\wwwroot\\css\\admin\\admin-users.css",
+      "PackagePath": "staticwebassets\\css\\admin\\admin-users.css"
+    },
+    {
+      "Id": "C:\\Users\\markn\\OneDrive\\Документы\\Projects\\MarkRestaurant-main\\wwwroot\\css\\auth\\confirm-email-succes.css",
+      "PackagePath": "staticwebassets\\css\\auth\\confirm-email-succes.css"
+    },
+    {
+      "Id": "C:\\Users\\markn\\OneDrive\\Документы\\Projects\\MarkRestaurant-main\\wwwroot\\css\\auth\\email-confirm.css",
+      "PackagePath": "staticwebassets\\css\\auth\\email-confirm.css"
+    },
+    {
+      "Id": "C:\\Users\\markn\\OneDrive\\Документы\\Projects\\MarkRestaurant-main\\wwwroot\\css\\auth\\forgot-password.css",
+      "PackagePath": "staticwebassets\\css\\auth\\forgot-password.css"
+    },
+    {
+      "Id": "C:\\Users\\markn\\OneDrive\\Документы\\Projects\\MarkRestaurant-main\\wwwroot\\css\\auth\\reset-passowrd-succes.css",
+      "PackagePath": "staticwebassets\\css\\auth\\reset-passowrd-succes.css"
+    },
+    {
+      "Id": "C:\\Users\\markn\\OneDrive\\Документы\\Projects\\MarkRestaurant-main\\wwwroot\\css\\auth\\reset-password.css",
+      "PackagePath": "staticwebassets\\css\\auth\\reset-password.css"
+    },
+    {
+      "Id": "C:\\Users\\markn\\OneDrive\\Документы\\Projects\\MarkRestaurant-main\\wwwroot\\css\\etc\\bootstrap.css",
+      "PackagePath": "staticwebassets\\css\\etc\\bootstrap.css"
+    },
+    {
+      "Id": "C:\\Users\\markn\\OneDrive\\Документы\\Projects\\MarkRestaurant-main\\wwwroot\\css\\etc\\error.css",
+      "PackagePath": "staticwebassets\\css\\etc\\error.css"
+    },
+    {
+      "Id": "C:\\Users\\markn\\OneDrive\\Документы\\Projects\\MarkRestaurant-main\\wwwroot\\css\\etc\\responsive.css",
+      "PackagePath": "staticwebassets\\css\\etc\\responsive.css"
+    },
+    {
+      "Id": "C:\\Users\\markn\\OneDrive\\Документы\\Projects\\MarkRestaurant-main\\wwwroot\\css\\etc\\site.css",
+      "PackagePath": "staticwebassets\\css\\etc\\site.css"
+    },
+    {
+      "Id": "C:\\Users\\markn\\OneDrive\\Документы\\Projects\\MarkRestaurant-main\\wwwroot\\css\\etc\\style.css",
+      "PackagePath": "staticwebassets\\css\\etc\\style.css"
+    },
+    {
+      "Id": "C:\\Users\\markn\\OneDrive\\Документы\\Projects\\MarkRestaurant-main\\wwwroot\\css\\etc\\style.css.map",
+      "PackagePath": "staticwebassets\\css\\etc\\style.css.map"
+    },
+    {
+      "Id": "C:\\Users\\markn\\OneDrive\\Документы\\Projects\\MarkRestaurant-main\\wwwroot\\css\\etc\\style.scss",
+      "PackagePath": "staticwebassets\\css\\etc\\style.scss"
     },
     {
       "Id": "C:\\Users\\markn\\OneDrive\\Документы\\Projects\\MarkRestaurant-main\\wwwroot\\css\\font-awesome.min.css",
       "PackagePath": "staticwebassets\\css\\font-awesome.min.css"
     },
     {
-      "Id": "C:\\Users\\markn\\OneDrive\\Документы\\Projects\\MarkRestaurant-main\\wwwroot\\css\\forgot-password.css",
-      "PackagePath": "staticwebassets\\css\\forgot-password.css"
+      "Id": "C:\\Users\\markn\\OneDrive\\Документы\\Projects\\MarkRestaurant-main\\wwwroot\\css\\user\\basket.css",
+      "PackagePath": "staticwebassets\\css\\user\\basket.css"
     },
     {
-      "Id": "C:\\Users\\markn\\OneDrive\\Документы\\Projects\\MarkRestaurant-main\\wwwroot\\css\\modals.css",
-      "PackagePath": "staticwebassets\\css\\modals.css"
+      "Id": "C:\\Users\\markn\\OneDrive\\Документы\\Projects\\MarkRestaurant-main\\wwwroot\\css\\user\\modals.css",
+      "PackagePath": "staticwebassets\\css\\user\\modals.css"
     },
     {
-      "Id": "C:\\Users\\markn\\OneDrive\\Документы\\Projects\\MarkRestaurant-main\\wwwroot\\css\\reset-passowrd-succes.css",
-      "PackagePath": "staticwebassets\\css\\reset-passowrd-succes.css"
+      "Id": "C:\\Users\\markn\\OneDrive\\Документы\\Projects\\MarkRestaurant-main\\wwwroot\\css\\user\\user-edit.css",
+      "PackagePath": "staticwebassets\\css\\user\\user-edit.css"
     },
     {
-      "Id": "C:\\Users\\markn\\OneDrive\\Документы\\Projects\\MarkRestaurant-main\\wwwroot\\css\\reset-password.css",
-      "PackagePath": "staticwebassets\\css\\reset-password.css"
-    },
-    {
-      "Id": "C:\\Users\\markn\\OneDrive\\Документы\\Projects\\MarkRestaurant-main\\wwwroot\\css\\responsive.css",
-      "PackagePath": "staticwebassets\\css\\responsive.css"
-    },
-    {
-      "Id": "C:\\Users\\markn\\OneDrive\\Документы\\Projects\\MarkRestaurant-main\\wwwroot\\css\\site.css",
-      "PackagePath": "staticwebassets\\css\\site.css"
-    },
-    {
-      "Id": "C:\\Users\\markn\\OneDrive\\Документы\\Projects\\MarkRestaurant-main\\wwwroot\\css\\style.css",
-      "PackagePath": "staticwebassets\\css\\style.css"
-    },
-    {
-      "Id": "C:\\Users\\markn\\OneDrive\\Документы\\Projects\\MarkRestaurant-main\\wwwroot\\css\\style.css.map",
-      "PackagePath": "staticwebassets\\css\\style.css.map"
-    },
-    {
-      "Id": "C:\\Users\\markn\\OneDrive\\Документы\\Projects\\MarkRestaurant-main\\wwwroot\\css\\style.scss",
-      "PackagePath": "staticwebassets\\css\\style.scss"
-    },
-    {
-      "Id": "C:\\Users\\markn\\OneDrive\\Документы\\Projects\\MarkRestaurant-main\\wwwroot\\css\\user-edit.css",
-      "PackagePath": "staticwebassets\\css\\user-edit.css"
-    },
-    {
-      "Id": "C:\\Users\\markn\\OneDrive\\Документы\\Projects\\MarkRestaurant-main\\wwwroot\\css\\user.css",
-      "PackagePath": "staticwebassets\\css\\user.css"
+      "Id": "C:\\Users\\markn\\OneDrive\\Документы\\Projects\\MarkRestaurant-main\\wwwroot\\css\\user\\user.css",
+      "PackagePath": "staticwebassets\\css\\user\\user.css"
     },
     {
       "Id": "C:\\Users\\markn\\OneDrive\\Документы\\Projects\\MarkRestaurant-main\\wwwroot\\favicon.ico",
@@ -163,6 +183,10 @@
     {
       "Id": "C:\\Users\\markn\\OneDrive\\Документы\\Projects\\MarkRestaurant-main\\wwwroot\\images\\wings.jpg",
       "PackagePath": "staticwebassets\\images\\wings.jpg"
+    },
+    {
+      "Id": "C:\\Users\\markn\\OneDrive\\Документы\\Projects\\MarkRestaurant-main\\wwwroot\\js\\admin-menu.js",
+      "PackagePath": "staticwebassets\\js\\admin-menu.js"
     },
     {
       "Id": "C:\\Users\\markn\\OneDrive\\Документы\\Projects\\MarkRestaurant-main\\wwwroot\\js\\bootstrap.js",

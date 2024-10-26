@@ -16,8 +16,17 @@ namespace MarkRestaurant.Controllers
         public IActionResult About() => View();
         public IActionResult BookTable() => View();
 
+        public IActionResult Error(string title, string description)
+        {
+            var errorViewModel = new ErrorViewModel(title, description);
 
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error() => View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            return View(errorViewModel);
+        }
+        public IActionResult Error(string title, string description, string aspController, string aspAction)
+        {
+            var errorViewModel = new ErrorViewModel(title, description, aspController, aspAction);
+
+            return View(errorViewModel);
+        }
     }
 }
