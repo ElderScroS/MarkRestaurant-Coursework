@@ -138,11 +138,11 @@
             const priceInput = document.getElementById('price');
             const priceValue = parseFloat(priceInput.value);
             if (!isNaN(priceValue)) {
-                priceInput.value = priceValue.toFixed(2); // Округление до двух знаков после запятой
-                alert("Округленная цена:", priceInput.value); // Вывод округленного значения в консоль
+                priceInput.value = priceValue.toFixed(2);
+                alert("Округленная цена:", priceInput.value);
             }
 
-            return true; // Возвращаем true, чтобы форма отправилась
+            return true;
         }
 
 
