@@ -1,6 +1,7 @@
 ﻿using MarkRestaurant.Data;
 using MarkRestaurant.Models;
 using Microsoft.EntityFrameworkCore;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -78,73 +79,93 @@ namespace MarkRestaurant.Data.Repository
                 .ToListAsync();
         }
 
-        // Получить данные для графика продаж по месяцам
-        public async Task<List<SalesData>> GetMonthlySalesAsync()
+        public async Task<List<SalesData>> GetWeeklySalesAsync()
         {
             var salesData = await _context.FinishedOrders
-                .Where(o => o.CompletedAt >= DateTime.Now.AddMonths(-6)) // Last 6 months
-                .GroupBy(o => new { o.CompletedAt.Year, o.CompletedAt.Month })
+                .Where(o => o.CompletedAt >= DateTime.Now.AddDays(-6))
+                .GroupBy(o => o.CompletedAt.Date)
                 .Select(g => new SalesData
                 {
-                    Month = $"{g.Key.Month}/{g.Key.Year}",
-                    TotalSales = g.Sum(o => o.Product.Price * o.Quantity)
+                    Day = g.Key.ToString("dddd", CultureInfo.InvariantCulture), // Используем CultureInfo.InvariantCulture для английского языка
+                    Date = g.Key.ToString("dd/MM/yyyy"),
+                    TotalSales = Math.Round(g.Sum(o => o.Product.Price * o.Quantity), 2)
                 })
                 .ToListAsync();
 
-            // Создаем список для всех месяцев за последние 6 месяцев
-            var allMonths = Enumerable.Range(0, 6)
-                .Select(i => DateTime.Now.AddMonths(-i).ToString("M/yyyy"))
-                .ToList();
+            var result = new List<SalesData>();
 
-            // Объединяем данные и заполняем нулями, если данные отсутствуют
-            var completeSalesData = allMonths.Select(month =>
-                salesData.FirstOrDefault(s => s.Month == month) ?? new SalesData
+            for (int i = 6; i >= 0; i--)
+            {
+                var date = DateTime.Now.AddDays(-i).Date;
+                var salesForDay = salesData.FirstOrDefault(s => s.Date == date.ToString("dd/MM/yyyy"));
+
+                if (salesForDay != null)
                 {
-                    Month = month,
-                    TotalSales = 0
-                }).ToList();
+                    result.Add(salesForDay);
+                }
+                else
+                {
+                    result.Add(new SalesData
+                    {
+                        Day = date.ToString("dddd", CultureInfo.InvariantCulture),
+                        Date = date.ToString("dd/MM/yyyy"),
+                        TotalSales = 0
+                    });
+                }
+            }
 
-            return completeSalesData;
+            return result;
         }
 
-        // Получить данные для графика регистраций пользователей по месяцам
-        public async Task<List<UserRegistrationData>> GetMonthlyUserRegistrationsAsync()
+        public async Task<List<UserRegistrationData>> GetWeeklyUserRegistrationsAsync()
         {
             var registrationData = await _context.Users
-                .Where(u => u.RegistrationDate >= DateTime.Now.AddMonths(-6)) // Last 6 months
-                .GroupBy(u => new { u.RegistrationDate.Year, u.RegistrationDate.Month })
+                .Where(u => u.RegistrationDate >= DateTime.Now.AddDays(-6))
+                .GroupBy(u => u.RegistrationDate.Date)
                 .Select(g => new UserRegistrationData
                 {
-                    Month = $"{g.Key.Month}/{g.Key.Year}",
+                    Day = g.Key.ToString("dddd", CultureInfo.InvariantCulture),
+                    Date = g.Key.ToString("dd/MM/yyyy"),
                     RegistrationCount = g.Count()
                 })
                 .ToListAsync();
 
-            // Создаем список для всех месяцев за последние 6 месяцев
-            var allMonths = Enumerable.Range(0, 6)
-                .Select(i => DateTime.Now.AddMonths(-i).ToString("M/yyyy"))
-                .ToList();
+            var result = new List<UserRegistrationData>();
 
-            // Объединяем данные и заполняем нулями, если данные отсутствуют
-            var completeRegistrationData = allMonths.Select(month =>
-                registrationData.FirstOrDefault(r => r.Month == month) ?? new UserRegistrationData
+            for (int i = 6; i >= 0; i--)
+            {
+                var date = DateTime.Now.AddDays(-i).Date;
+                var registrationsForDay = registrationData.FirstOrDefault(r => r.Date == date.ToString("dd/MM/yyyy"));
+
+                if (registrationsForDay != null)
                 {
-                    Month = month,
-                    RegistrationCount = 0
-                }).ToList();
+                    result.Add(registrationsForDay);
+                }
+                else
+                {
+                    result.Add(new UserRegistrationData
+                    {
+                        Day = date.ToString("dddd", CultureInfo.InvariantCulture),
+                        Date = date.ToString("dd/MM/yyyy"),
+                        RegistrationCount = 0
+                    });
+                }
+            }
 
-            return completeRegistrationData;
+            return result;
         }
 
         public class SalesData
         {
-            public string Month { get; set; }
+            public string Day { get; set; }
+            public string Date { get; set; }
             public double TotalSales { get; set; }
         }
 
         public class UserRegistrationData
         {
-            public string Month { get; set; }
+            public string Day { get; set; }
+            public string Date { get; set; }
             public int RegistrationCount { get; set; }
         }
     }

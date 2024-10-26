@@ -11,8 +11,8 @@
     var todayFinishedOrders = dashboardRepository.GetTodayFinishedOrdersCountAsync().Result;
     var totalRevenue = dashboardRepository.GetTotalRevenueAsync().Result;
     var topUsers = dashboardRepository.GetTopUsersAsync().Result;
-    var monthlySalesData = dashboardRepository.GetMonthlySalesAsync().Result;
-    var monthlyUserRegistrations = dashboardRepository.GetMonthlyUserRegistrationsAsync().Result;
+    var weeklySalesData = dashboardRepository.GetWeeklySalesAsync().Result;
+    var weeklyUserRegistrations = dashboardRepository.GetWeeklyUserRegistrationsAsync().Result;
 }
 
 <!DOCTYPE html>
@@ -119,15 +119,16 @@
 
     <script>
         // Данные для графиков
-        const salesData = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(monthlySalesData));
-        const registrationsData = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(monthlyUserRegistrations));
+        const salesData = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(weeklySalesData));
+        const registrationsData = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(weeklyUserRegistrations)); // Updated
+
 
         // График продаж
         const salesCtx = document.getElementById('salesChart').getContext('2d');
         const salesChart = new Chart(salesCtx, {
             type: 'bar',
             data: {
-                labels: salesData.map(data => data.Month),
+                labels: salesData.map(data => data.Day), // Измените на Day, если используете даты
                 datasets: [{
                     label: 'Total Sales',
                     data: salesData.map(data => data.TotalSales),
@@ -150,7 +151,7 @@
         const registrationsChart = new Chart(registrationsCtx, {
             type: 'line',
             data: {
-                labels: registrationsData.map(data => data.Month),
+                labels: registrationsData.map(data => data.Day), // Используйте название дня недели
                 datasets: [{
                     label: 'User Registrations',
                     data: registrationsData.map(data => data.RegistrationCount),
