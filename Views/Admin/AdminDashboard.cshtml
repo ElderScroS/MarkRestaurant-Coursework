@@ -118,11 +118,9 @@
     </div>
 
     <script>
-        // Данные для графиков
         const salesData = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(monthlySalesData));
         const registrationsData = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(monthlyUserRegistrations));
 
-        // График продаж
         const salesCtx = document.getElementById('salesChart').getContext('2d');
         const salesChart = new Chart(salesCtx, {
             type: 'bar',
@@ -145,7 +143,6 @@
             }
         });
 
-        // График регистраций
         const registrationsCtx = document.getElementById('registrationsChart').getContext('2d');
         const registrationsChart = new Chart(registrationsCtx, {
             type: 'line',
